@@ -1,0 +1,15 @@
+# Build output
+target/
+
+# IDE and OS files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Secrets and local settings - never commit these
+.env
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/

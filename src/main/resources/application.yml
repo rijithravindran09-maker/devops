@@ -1,0 +1,44 @@
+# Every setting that differs between environments comes from an environment
+# variable, with a default that works on your laptop:  ${VARIABLE:default}
+server:
+  port: ${PORT:8080}
+  shutdown: graceful                 # finish requests in progress before stopping
+
+spring:
+  application:
+    name: product-api
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:products;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate             # Flyway creates the tables; Hibernate only checks them
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true                # /actuator/health/liveness and /readiness
+  metrics:
+    tags:
+      application: product-api
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true   # lets Prometheus calculate response-time percentiles
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    version: ${APP_VERSION:dev}
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
